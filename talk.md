@@ -186,7 +186,7 @@ dtype: float64
 
 ---
 
-* Attributes
+* Attributes: index, columns, dtypes, values
 
 ```
 >>> countries.index
@@ -209,7 +209,18 @@ population    float64
 dtype: object
 >>>
 ```
+--
+```
+>>> countries.values
+array([[30510, 'Brussels', 'Belgium', 11.3],
+       [671308, 'Paris', 'France', 64.3],
+       [357050, 'Berlin', 'Germany', 81.3],
+       [41526, 'Amsterdam', 'Netherlands', 16.9],
+       [244820, 'London', 'United Kingdom', 64.9]], dtype=object)
+>>>
+```
 ---
+* Info
 ```
 >>> countries.info()
 <class 'pandas.core.frame.DataFrame'>
@@ -221,16 +232,6 @@ country       5 non-null object
 population    5 non-null float64
 dtypes: float64(1), int64(1), object(2)
 memory usage: 200.0 bytes
->>>
-```
---
-```
->>> countries.values
-array([[30510, 'Brussels', 'Belgium', 11.3],
-       [671308, 'Paris', 'France', 64.3],
-       [357050, 'Berlin', 'Germany', 81.3],
-       [41526, 'Amsterdam', 'Netherlands', 16.9],
-       [244820, 'London', 'United Kingdom', 64.9]], dtype=object)
 >>>
 ```
 ---
@@ -276,6 +277,12 @@ Germany           357050
 Netherlands        41526
 United Kingdom    244820
 Name: area, dtype: int64
+>>>
+```
+--
+```
+>>> print countries['capital']['France']
+Paris
 >>>
 ```
 --
@@ -356,14 +363,14 @@ max    671308.000000   81.300000  406.973944
 
 * Plotting
 ```
->>> countries.plot()
+>>> countries.plot() # doctest: +SKIP
 >>>
 ```
 <img src="figure_1.png" height="300"/>
 ---
 * Plotting barchart
 ```
->>> countries.plot(kind='bar')
+>>> countries.plot(kind='bar') # doctest: +SKIP
 >>>
 ```
 <img src="figure_2.png" height="300"/>
@@ -371,12 +378,110 @@ max    671308.000000   81.300000  406.973944
 
 ### Features
 
+* like numpy arrays with labels
 * supported import/export formats: CSV, SQL, Excel...
-* missing data
-* merging
-* reshaping
-* plotting
+* support for missing data
+* support for heterogeneous data
+* merging data
+* reshaping data
+* easy plotting 
+
 
 ---
 
-Acknowledgement: Based on EuroSciPy tutorial by Joris Van den Bossche
+### Example
+
+A movie database in csv format `titles.csv`
+
+* Titles
+
+```bash
+$ head titles.csv
+title,year
+The Rising Son,1990
+Ashes of Kukulcan,2016
+The Thousand Plane Raid,1969
+Crucea de piatra,1993
+The 86,2015
+Gaiking II,2011
+Medusa (IV),2015
+Cultural Menace,2004
+Alex in Wonderland,1970
+```
+
+--
+
+```
+>>> titles = pd.read_csv('titles.csv')
+>>> titles.head()
+                     title  year
+0           The Rising Son  1990
+1        Ashes of Kukulcan  2016
+2  The Thousand Plane Raid  1969
+3         Crucea de piatra  1993
+4                   The 86  2015
+>>>
+```
+---
+
+* How many movies?
+
+--
+
+```
+>>> len(titles)
+215981
+>>>
+```
+
+--
+
+* Two earliest films?
+
+--
+
+
+```
+>>> titles.sort('year').head(2)
+                                                    title  year
+165182                                         Miss Jerry  1894
+85708   Reproduction of the Corbett and Fitzsimmons Fight  1897
+>>>
+```
+--
+
+* Number of movies with title *Hamlet*?
+
+--
+
+```
+>>> len(titles[titles.title == "Hamlet"])
+19
+>>>
+```
+
+---
+
+* List all *Treasure Island* movies sorted by year
+
+--
+
+```
+>>> titles[titles.title == "Treasure Island"].sort('year')
+                  title  year
+191379  Treasure Island  1918
+47769   Treasure Island  1920
+192917  Treasure Island  1934
+90175   Treasure Island  1950
+104714  Treasure Island  1972
+103646  Treasure Island  1973
+190792  Treasure Island  1985
+166675  Treasure Island  1999
+>>>
+```
+
+---
+
+#### Acknowledgement 
+Based on [EuroSciPy tutorial](https://github.com/jorisvandenbossche/2015-EuroScipy-pandas-tutorial.git) by Joris Van den Bossche
+and [PyCon tutorial](https://github.com/brandon-rhodes/pycon-pandas-tutorial) by Brandon Rhsodes

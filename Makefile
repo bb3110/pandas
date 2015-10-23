@@ -1,5 +1,6 @@
 index.html: talk.md
 	python refreeze/freeze.py
+	cat index.html | sed "s/\# doctest:.*//" > index.html
 
 test:
 	nosetests -vx --with-doctest --doctest-extension=md talk.md
