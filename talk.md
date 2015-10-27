@@ -484,4 +484,4 @@ Alex in Wonderland,1970
 
 #### Acknowledgement 
 Based on [EuroSciPy tutorial](https://github.com/jorisvandenbossche/2015-EuroScipy-pandas-tutorial.git) by Joris Van den Bossche
-and [PyCon tutorial](https://github.com/brandon-rhodes/pycon-pandas-tutorial) by Brandon Rhsodes
+and [PyCon tutorial](https://github.com/brandon-rhodes/pycon-pandas-tutorial) by Brandon Rhodes
