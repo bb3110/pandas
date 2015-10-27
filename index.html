@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <style type="text/css">
+      @import url(http://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: 400;
+        margin-bottom: 0;
+      }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
+      li p { line-height: 1.25em; }
+      .red { color: #fa0000; }
+      .large { font-size: 2em; }
+      a, a > code {
+        color: rgb(249, 38, 114);
+        text-decoration: none;
+      }
+      code {
+        -moz-border-radius: 5px;
+        -web-border-radius: 5px;
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #373832; }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      #slideshow .slide .content code {
+        font-size: 0.8em;
+      }
+      #slideshow .slide .content pre code {
+        font-size: 0.9em;
+        padding: 15px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+
+      /* Slide-specific styling */
+      #slide-inverse .footnote {
+        bottom: 12px;
+        left: 20px;
+      }
+      #slide-how .slides {
+        font-size: 0.9em;
+        position: absolute;
+        top:  151px;
+        right: 140px;
+      }
+      #slide-how .slides h3 {
+        margin-top: 0.2em;
+      }
+      #slide-how .slides .first, #slide-how .slides .second {
+        padding: 1px 20px;
+        height: 90px;
+        width: 120px;
+        -moz-box-shadow: 0 0 10px #777;
+        -webkit-box-shadow: 0 0 10px #777;
+        box-shadow: 0 0 10px #777;
+      }
+      #slide-how .slides .first {
+        background: #fff;
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        z-index: 1;
+      }
+      #slide-how .slides .second {
+        position: relative;
+        background: #fff;
+        z-index: 0;
+      }
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+    </style>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+  </head>
+  <body>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script src="/pandas/refreeze/js/springy.js"></script>
+    <script src="/pandas/refreeze/js/springyui.js"></script>
+    <script>
+        
+    </script>
+    <textarea id="source">
+name: inverse
+layout: true
+class: center, middle, inverse
+
+---
+
+&lt;script type=&#34;text/javascript&#34;
+  src=&#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;&gt;
+&lt;/script&gt;
+# Data handling: pandas
+
+## Olav Vahtras
+
+Computational Python
+
+---
+
+layout: false
+
+## Datahandling in Python
+
+### The `pandas` module
+
+Setup:
+
+```
+&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; import matplotlib.pyplot as plt
+&gt;&gt;&gt; import seaborn
+
+```
+
+Two main data structures
+
+* Series
+* Data frames
+---
+
+### Series
+
+One-dimensional labeled data
+
+```
+&gt;&gt;&gt; s = pd.Series([0.1, 0.2, 0.3, 0.4])
+&gt;&gt;&gt; print s
+0    0.1
+1    0.2
+2    0.3
+3    0.4
+dtype: float64
+
+```
+--
+```
+&gt;&gt;&gt; print s.index
+Int64Index([0, 1, 2, 3], dtype=&#39;int64&#39;)
+
+```
+--
+```
+&gt;&gt;&gt; print s.values
+[ 0.1  0.2  0.3  0.4]
+
+```
+
+---
+
+* indices can be labels (like a dict with order)
+
+```
+&gt;&gt;&gt; s = pd.Series(np.arange(4), index=[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;])
+&gt;&gt;&gt; print s
+a    0
+b    1
+c    2
+d    3
+dtype: int64
+&gt;&gt;&gt; print s[&#39;d&#39;]
+3
+&gt;&gt;&gt;
+```
+--
+* Initialize with dict
+
+```
+&gt;&gt;&gt; s = pd.Series({&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4})
+&gt;&gt;&gt; print s
+a    1
+b    2
+c    3
+d    4
+dtype: int64
+&gt;&gt;&gt;
+```
+--
+* Indexing as a dict
+
+```
+&gt;&gt;&gt; print s[&#39;a&#39;]
+1
+
+```
+---
+
+* Elementwise operations
+```
+&gt;&gt;&gt; print s * 100
+a    100
+b    200
+c    300
+d    400
+dtype: int64
+&gt;&gt;&gt;
+```
+--
+
+* Slicing
+```
+&gt;&gt;&gt; s[&#39;b&#39;: &#39;c&#39;]
+b    2
+c    3
+dtype: int64
+&gt;&gt;&gt;
+```
+
+---
+
+* List indexing
+```
+&gt;&gt;&gt; print s[[&#39;b&#39;, &#39;c&#39;]]
+b    2
+c    3
+dtype: int64
+&gt;&gt;&gt;
+```
+--
+
+* Bool indexing
+```
+&gt;&gt;&gt; print s[s&gt;2]
+c    3
+d    4
+dtype: int64
+&gt;&gt;&gt;
+```
+--
+
+* Other operations
+```
+&gt;&gt;&gt; s.mean()
+2.5
+&gt;&gt;&gt;
+```
+---
+
+* Alignment on indices
+```
+&gt;&gt;&gt; s[&#39;a&#39;:&#39;b&#39;] + s[&#39;b&#39;:&#39;c&#39;]
+a   NaN
+b     4
+c   NaN
+dtype: float64
+&gt;&gt;&gt;
+```
+---
+
+### DataFrames
+
+* Tabular data structure (like spreadsheet, sql table)
+* Multiple series with common index
+
+```
+&gt;&gt;&gt; data = {&#39;country&#39;: [&#39;Belgium&#39;, &#39;France&#39;, &#39;Germany&#39;, &#39;Netherlands&#39;, &#39;United Kingdom&#39;],
+...        &#39;population&#39;: [11.3, 64.3, 81.3, 16.9, 64.9],
+...        &#39;area&#39;: [30510, 671308, 357050, 41526, 244820],
+...        &#39;capital&#39;: [&#39;Brussels&#39;, &#39;Paris&#39;, &#39;Berlin&#39;, &#39;Amsterdam&#39;, &#39;London&#39;]}
+&gt;&gt;&gt;
+```
+--
+```
+&gt;&gt;&gt; countries = pd.DataFrame(data)
+&gt;&gt;&gt; print countries
+     area    capital         country  population
+0   30510   Brussels         Belgium        11.3
+1  671308      Paris          France        64.3
+2  357050     Berlin         Germany        81.3
+3   41526  Amsterdam     Netherlands        16.9
+4  244820     London  United Kingdom        64.9
+&gt;&gt;&gt;
+```
+
+---
+
+* Attributes: index, columns, dtypes, values
+
+```
+&gt;&gt;&gt; countries.index
+Int64Index([0, 1, 2, 3, 4], dtype=&#39;int64&#39;)
+&gt;&gt;&gt;
+```
+--
+```
+&gt;&gt;&gt; countries.columns
+Index([u&#39;area&#39;, u&#39;capital&#39;, u&#39;country&#39;, u&#39;population&#39;], dtype=&#39;object&#39;)
+&gt;&gt;&gt;
+```
+--
+```
+&gt;&gt;&gt; countries.dtypes
+area            int64
+capital        object
+country        object
+population    float64
+dtype: object
+&gt;&gt;&gt;
+```
+--
+```
+&gt;&gt;&gt; countries.values
+array([[30510, &#39;Brussels&#39;, &#39;Belgium&#39;, 11.3],
+       [671308, &#39;Paris&#39;, &#39;France&#39;, 64.3],
+       [357050, &#39;Berlin&#39;, &#39;Germany&#39;, 81.3],
+       [41526, &#39;Amsterdam&#39;, &#39;Netherlands&#39;, 16.9],
+       [244820, &#39;London&#39;, &#39;United Kingdom&#39;, 64.9]], dtype=object)
+&gt;&gt;&gt;
+```
+---
+* Info
+```
+&gt;&gt;&gt; countries.info()
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 5 entries, 0 to 4
+Data columns (total 4 columns):
+area          5 non-null int64
+capital       5 non-null object
+country       5 non-null object
+population    5 non-null float64
+dtypes: float64(1), int64(1), object(2)
+memory usage: 200.0 bytes
+&gt;&gt;&gt;
+```
+---
+
+* Set a column as index
+```
+&gt;&gt;&gt; print countries
+     area    capital         country  population
+0   30510   Brussels         Belgium        11.3
+1  671308      Paris          France        64.3
+2  357050     Berlin         Germany        81.3
+3   41526  Amsterdam     Netherlands        16.9
+4  244820     London  United Kingdom        64.9
+&gt;&gt;&gt;
+```
+--
+```
+&gt;&gt;&gt; countries = countries.set_index(&#39;country&#39;)
+&gt;&gt;&gt;
+```
+--
+```
+&gt;&gt;&gt; print countries
+                  area    capital  population
+country                                      
+Belgium          30510   Brussels        11.3
+France          671308      Paris        64.3
+Germany         357050     Berlin        81.3
+Netherlands      41526  Amsterdam        16.9
+United Kingdom  244820     London        64.9
+&gt;&gt;&gt;
+```
+
+---
+
+* Access a single series in a table
+```
+&gt;&gt;&gt; print countries[&#39;area&#39;]
+country
+Belgium            30510
+France            671308
+Germany           357050
+Netherlands        41526
+United Kingdom    244820
+Name: area, dtype: int64
+&gt;&gt;&gt;
+```
+--
+```
+&gt;&gt;&gt; print countries[&#39;capital&#39;][&#39;France&#39;]
+Paris
+&gt;&gt;&gt;
+```
+--
+
+* Arithmetic (population density)
+```
+&gt;&gt;&gt; print countries[&#39;population&#39;]/countries[&#39;area&#39;]*10**6
+country
+Belgium           370.370370
+France             95.783158
+Germany           227.699202
+Netherlands       406.973944
+United Kingdom    265.092721
+dtype: float64
+&gt;&gt;&gt;
+```
+
+---
+
+
+* Add new column
+```
+&gt;&gt;&gt; countries[&#39;density&#39;] =  countries[&#39;population&#39;]/countries[&#39;area&#39;]*10**6
+&gt;&gt;&gt; print countries
+                  area    capital  population     density
+country                                                  
+Belgium          30510   Brussels        11.3  370.370370
+France          671308      Paris        64.3   95.783158
+Germany         357050     Berlin        81.3  227.699202
+Netherlands      41526  Amsterdam        16.9  406.973944
+United Kingdom  244820     London        64.9  265.092721
+&gt;&gt;&gt;
+```
+
+--
+
+* Filter data
+```
+&gt;&gt;&gt; print countries[countries[&#39;density&#39;] &gt; 300]
+              area    capital  population     density
+country                                              
+Belgium      30510   Brussels        11.3  370.370370
+Netherlands  41526  Amsterdam        16.9  406.973944
+&gt;&gt;&gt;
+```
+---
+
+* Sort data
+```
+&gt;&gt;&gt; print countries.sort(&#39;density&#39;, ascending=False)
+                  area    capital  population     density
+country                                                  
+Netherlands      41526  Amsterdam        16.9  406.973944
+Belgium          30510   Brussels        11.3  370.370370
+United Kingdom  244820     London        64.9  265.092721
+Germany         357050     Berlin        81.3  227.699202
+France          671308      Paris        64.3   95.783158
+&gt;&gt;&gt;
+```
+
+--
+
+* Statistics
+```
+&gt;&gt;&gt; print countries.describe()
+                area  population     density
+count       5.000000    5.000000    5.000000
+mean   269042.800000   47.740000  273.183879
+std    264012.827994   31.519645  123.440607
+min     30510.000000   11.300000   95.783158
+25%     41526.000000   16.900000  227.699202
+50%    244820.000000   64.300000  265.092721
+75%    357050.000000   64.900000  370.370370
+max    671308.000000   81.300000  406.973944
+&gt;&gt;&gt;
+```
+---
+
+* Plotting
+```
+&gt;&gt;&gt; countries.plot() 
+&gt;&gt;&gt;
+```
+&lt;img src=&#34;figure_1.png&#34; height=&#34;300&#34;/&gt;
+---
+* Plotting barchart
+```
+&gt;&gt;&gt; countries.plot(kind=&#39;bar&#39;) 
+&gt;&gt;&gt;
+```
+&lt;img src=&#34;figure_2.png&#34; height=&#34;300&#34;/&gt;
+---
+
+### Features
+
+* like numpy arrays with labels
+* supported import/export formats: CSV, SQL, Excel...
+* support for missing data
+* support for heterogeneous data
+* merging data
+* reshaping data
+* easy plotting 
+
+
+---
+
+### Example
+
+A movie database in csv format `titles.csv`
+
+* Titles
+
+```bash
+$ head titles.csv
+title,year
+The Rising Son,1990
+Ashes of Kukulcan,2016
+The Thousand Plane Raid,1969
+Crucea de piatra,1993
+The 86,2015
+Gaiking II,2011
+Medusa (IV),2015
+Cultural Menace,2004
+Alex in Wonderland,1970
+```
+
+--
+
+```
+&gt;&gt;&gt; titles = pd.read_csv(&#39;titles.csv&#39;)
+&gt;&gt;&gt; titles.head()
+                     title  year
+0           The Rising Son  1990
+1        Ashes of Kukulcan  2016
+2  The Thousand Plane Raid  1969
+3         Crucea de piatra  1993
+4                   The 86  2015
+&gt;&gt;&gt;
+```
+---
+
+* How many movies?
+
+--
+
+```
+&gt;&gt;&gt; len(titles)
+215981
+&gt;&gt;&gt;
+```
+
+--
+
+* Two earliest films?
+
+--
+
+
+```
+&gt;&gt;&gt; titles.sort(&#39;year&#39;).head(2)
+                                                    title  year
+165182                                         Miss Jerry  1894
+85708   Reproduction of the Corbett and Fitzsimmons Fight  1897
+&gt;&gt;&gt;
+```
+--
+
+* Number of movies with title *Hamlet*?
+
+--
+
+```
+&gt;&gt;&gt; len(titles[titles.title == &#34;Hamlet&#34;])
+19
+&gt;&gt;&gt;
+```
+
+---
+
+* List all *Treasure Island* movies sorted by year
+
+--
+
+```
+&gt;&gt;&gt; titles[titles.title == &#34;Treasure Island&#34;].sort(&#39;year&#39;)
+                  title  year
+191379  Treasure Island  1918
+47769   Treasure Island  1920
+192917  Treasure Island  1934
+90175   Treasure Island  1950
+104714  Treasure Island  1972
+103646  Treasure Island  1973
+190792  Treasure Island  1985
+166675  Treasure Island  1999
+&gt;&gt;&gt;
+```
+
+---
+
+#### Acknowledgement 
+Based on [EuroSciPy tutorial](https://github.com/jorisvandenbossche/2015-EuroScipy-pandas-tutorial.git) by Joris Van den Bossche
+and [PyCon tutorial](https://github.com/brandon-rhodes/pycon-pandas-tutorial) by Brandon Rhodes
+    </textarea>
+
+    <script src="/pandas/refreeze/js/remark-latest.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var hljs = remark.highlighter.engine;
+    </script>
+    <script src="/pandas/refreeze/js/high.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create({
+          highlightStyle: 'sunburst',
+          highlightLanguage: 'remark'
+        }) ;
+    </script>
+  </body>
+</html>
