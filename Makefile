@@ -1,17 +1,18 @@
-index.html: talk.md
+index.html: talk.md talk.css
 	python refreeze/freeze.py
-	cat index.html | sed "s/\# doctest:.*//" > tmp.html
-	mv tmp.html index.html
+	@cp index.html /tmp
+	@cat /tmp/index.html | sed "s;img/;/pandas/img/;" > index.html
+	vim -s script index.html
 
 test:
-	nosetests -vx --with-doctest --doctest-extension=md talk.md
+	python -m doctest talk.md
 
-RANDOM_PORT=`python -c 'import random; print int(5000+ 5000*random.random())'`
+pytest:
+	python -m pytest -vx --doctest-glob '*.md'
+
+RANDOM_PORT=`python -c 'import random; print(int(5000+ 5000*random.random()))'`
 
 slideshow:
-	PORT=$(RANDOM_PORT) python refreeze/flask_app.py
-init:
-	git submodule update --init
-	virtualenv venv
-	. venv/bin/activate
-	pip install -r requirements.txt
+	PORT=$(RANDOM_PORT) python refreeze/flask_app.py &
+show:
+	python refreeze/open_static.py
